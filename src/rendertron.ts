@@ -55,6 +55,14 @@ export class Rendertron {
 
     this.app.use(koaLogger());
 
+    this.app.use(async (ctx: Koa.Context, next) => {
+      console.table({
+        UserAgent: ctx.header['user-agent'],
+        RequestTime: formatTime(new Date()),
+      });
+      await next();
+    });
+
     this.app.use(koaCompress());
 
     this.app.use(bodyParser());
@@ -84,14 +92,6 @@ export class Rendertron {
       this.app.use(route.get('/invalidate/:url(.*)', filesystemCache.invalidateHandler()));
       this.app.use(new FilesystemCache(this.config).middleware());
     }
-
-    this.app.use(async (ctx: Koa.Context, next) => {
-      console.table({
-        UserAgent: ctx.header['user-agent'],
-        RequestTime: formatTime(new Date()),
-      });
-      await next();
-    });
 
     this.app.use(
       route.get('/render/:url(.*)', this.handleRenderRequest.bind(this)));
