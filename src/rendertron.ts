@@ -85,11 +85,12 @@ export class Rendertron {
       this.app.use(new FilesystemCache(this.config).middleware());
     }
 
-    this.app.use((ctx: Koa.Context) => {
+    this.app.use(async (ctx: Koa.Context, next) => {
       console.table({
         UserAgent: ctx.header['user-agent'],
         RequestTime: formatTime(new Date()),
       });
+      await next();
     });
 
     this.app.use(
