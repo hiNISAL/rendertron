@@ -32,6 +32,11 @@ export class Renderer {
 
   async serialize(requestUrl: string, isMobile: boolean):
     Promise<SerializedResponse> {
+
+    if (requestUrl.includes('cli.im') || requestUrl.includes('cliim.net') || requestUrl.includes('cliim.com')) {
+      requestUrl = `${requestUrl}&puppeteer=1`;
+    }
+
     /**
      * Executed on the page after the page has loaded. Strips script and
      * import tags to prevent further loading of resources.
