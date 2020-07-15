@@ -13,14 +13,15 @@
   "scripts": {
     "build": "tsc",
     "prepack": "npm run build",
-    "start": "node build/rendertron.js",
     "format": "find src -name '*.ts' | xargs clang-format --style=file -i",
     "lint": "tslint --project . --format stylish",
     "monitor": "nodemon",
     "monitor-inspect": "nodemon --inspect src/main.js",
     "test": "(cd test-resources && npm install) && npm run build && ava build/test/app-test.js --timeout 5s",
     "start-emulator": "(gcloud beta emulators datastore start --no-store-on-disk --project emulator-project --host-port localhost:8380 &) 2>&1 | grep -m1 'now running'",
-    "test-cache": "npm run start-emulator && $(gcloud beta emulators datastore env-init) && export GCLOUD_PROJECT=emulator-project && ava build/test/*-cache-test.js"
+    "test-cache": "npm run start-emulator && $(gcloud beta emulators datastore env-init) && export GCLOUD_PROJECT=emulator-project && ava build/test/*-cache-test.js",
+    "service": "node build/rendertron.js",
+    "start": "pm2 start npm --watch --name seo-service -- run service"
   },
   "dependencies": {
     "@google-cloud/datastore": "^2.0.0",
@@ -36,6 +37,7 @@
     "koa-send": "^5.0.0",
     "koa-static": "^5.0.0",
     "performance-now": "^2.1.0",
+    "pm2": "^4.4.0",
     "puppeteer": "^2.0.0",
     "semver": "^7.1.0"
   },
