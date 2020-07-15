@@ -34,7 +34,7 @@ export class Renderer {
     Promise<SerializedResponse> {
 
     if (requestUrl.includes('cli.im') || requestUrl.includes('cliim.net') || requestUrl.includes('cliim.com')) {
-      requestUrl = `${requestUrl}&puppeteer=1`;
+      requestUrl = `${requestUrl}${requestUrl.includes('?') ? '&puppeteer=1' : '?puppeteer=1'}`;
     }
 
     /**
